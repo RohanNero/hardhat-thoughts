@@ -1,0 +1,8 @@
+node_modules
+artifacts
+.env
+cache
+notes.txt
+yarn.lock
+misc.txt
+superMisc.txt
