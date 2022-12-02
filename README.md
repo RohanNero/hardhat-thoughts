@@ -7,3 +7,6 @@ The purpose of this repo is very simple:
 Think of this as a digital store where you can get your own "immutable diary" for free
 
 _all you have to do is pay for the gas to deploy it_
+
+---
+

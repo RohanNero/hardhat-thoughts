@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.7;
 
-error Thoughts__InvalidAddress(address addr);
+error SimpleThoughts__InvalidAddress(address addr);
 
-contract Thoughts {
+contract SimpleThoughts {
     address public owner; // only one address is allowed to create thoughts at a time
 
     Thought[] public thoughtArray; // instead of using an array, should I use a mapping? wouldn't be able to iterate through..
@@ -17,20 +17,22 @@ contract Thoughts {
     event ThoughtShared(uint24 thoughtId, address thinker);
     event OwnerChanged(address oldOwner, address newOwner);
 
-    modifier onlyOwner(address addr) {
-        if (msg.sender != owner) {
-            revert Thoughts__InvalidAddress(addr);
-        }
-        _;
-    }
+    // deciding whether or not to revert if changeOwner() is called with current owner address, if I do then I won't need this modifier
+    // modifier onlyOwner(address addr) {
+    //     if (msg.sender != owner) {
+    //         revert SimpleThoughts__InvalidAddress(addr);
+    //     }
+    //     _;
+    // }
 
     constructor() {
         owner = msg.sender;
     }
 
-    function createThought(
-        string memory thought
-    ) public onlyOwner(msg.sender) returns (uint24) {
+    function shareThought(string memory thought) public {
+        if (msg.sender != owner) {
+            revert SimpleThoughts__InvalidAddress(msg.sender);
+        }
         Thought memory memThought = Thought(
             thought,
             uint24(thoughtArray.length)
@@ -40,12 +42,12 @@ contract Thoughts {
     }
 
     /**@dev sets owner equal to msg.sender */
-    function changeOwner(address newOwner) public onlyOwner(msg.sender) {
+    function changeOwner(address newOwner) public {
         if (msg.sender != owner || newOwner == owner) {
-            revert Thoughts__InvalidAddress(msg.sender);
+            revert SimpleThoughts__InvalidAddress(msg.sender);
         }
         address oldOwner = owner;
-        owner = msg.sender;
+        owner = newOwner;
         emit OwnerChanged(oldOwner, owner);
     }
 }

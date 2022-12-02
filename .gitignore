@@ -6,3 +6,5 @@ notes.txt
 yarn.lock
 misc.txt
 superMisc.txt
+coverage
+coverage.json
